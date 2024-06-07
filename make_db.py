@@ -4,7 +4,7 @@ import pandas as pd
 
 df = pd.read_csv('/Users/kawamoto/Desktop/Gian-Search/Gian_title.csv')
 
-df.colums = ['date', 'title']
+df.colums = ['date', 'meeting', 'title']
 
 
 dbname = 'GIAN_TITEL.db'

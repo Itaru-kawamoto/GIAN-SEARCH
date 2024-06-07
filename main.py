@@ -56,25 +56,25 @@ def main_app():
 
         st.subheader('基本形')
 
-        sql_query = "SELECT date, title FROM titles WHERE date = '基本形' AND title LIKE ? AND title LIKE ? AND title LIKE ?"
+        sql_query = "SELECT date, meeting, title FROM titles WHERE date = '基本形' AND title LIKE ? AND title LIKE ? AND title LIKE ?"
         params = ('%' + option3 + '%', '%' + option4 + '%', '%' + text_input5 + '%')
         cur.execute(sql_query, params)
         for row in cur:
-            st.write(row)
+            st.dataframe(row, use_container_width=True)
 
         st.subheader('実際のタイトル例')
 
-        sql_query = "SELECT date, title FROM titles WHERE NOT (date='基本形') AND title LIKE ? AND title LIKE ? AND title LIKE ? AND title LIKE ?"
+        sql_query = "SELECT date, meeting, title FROM titles WHERE NOT (date='基本形') AND title LIKE ? AND title LIKE ? AND title LIKE ? AND title LIKE ?"
         params = ('%' + option1 + '%', '%' + option3 + '%', '%' + option4 + '%', '%' + text_input5 + '%')
         cur.execute(sql_query, params)
 
         for row in cur:
-            st.write(row)
+            st.dataframe(row, use_container_width=True)
 
-        #conn.close()
+        conn.close()
 
 def main():
-    st.sidebar.title("Authentication Demo")
+    st.sidebar.title("本人認証")
     menu = ["Home", "Login", "SignUp"]
     choice = st.sidebar.radio("Menu", menu)
 
