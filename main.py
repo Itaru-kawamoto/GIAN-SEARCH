@@ -57,7 +57,7 @@ def main_app():
     text_input5 = st.text_input('フリーワード検索（複数不可）')
 
     if st.button('検索スタート'):
-        dbname = 'GIAN_TITEL.db'
+        dbname = 'GIAN_TITLE.db'
         conn = sqlite3.connect(dbname, check_same_thread=False)
         cur = conn.cursor()
 
