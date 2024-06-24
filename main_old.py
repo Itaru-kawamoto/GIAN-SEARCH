@@ -20,13 +20,6 @@ def add_user(username, password):
     conn.commit()
     conn.close()
 
-def delete_user(username):
-    conn = sqlite3.connect('users.db', check_same_thread=False)
-    c = conn.cursor()
-    c.execute('DELETE FROM users WHERE username = ?', (username,))
-    conn.commit()
-    conn.close()
-
 def check_user(username, password):
     conn = sqlite3.connect('users.db', check_same_thread=False)
     c = conn.cursor()
@@ -57,7 +50,7 @@ def main_app():
     text_input5 = st.text_input('フリーワード検索（複数不可）')
 
     if st.button('検索スタート'):
-        dbname = 'GIAN_TITEL.db'
+        dbname = 'GIAN_TITLE.db'
         conn = sqlite3.connect(dbname, check_same_thread=False)
         cur = conn.cursor()
 
@@ -78,49 +71,7 @@ def main_app():
         for row in cur:
             st.dataframe(row, use_container_width=True)
 
-
-# 管理者用のデータベース操作関数を追加
-def admin_add_title(date, meeting, title):
-    conn = sqlite3.connect('GIAN_TITEL.db', check_same_thread=False)
-    c = conn.cursor()
-    c.execute('INSERT INTO titles (date, meeting, title) VALUES (?, ?, ?)', (date, meeting, title))
-    conn.commit()
-    conn.close()
-
-def admin_delete_title(title_id):
-    conn = sqlite3.connect('GIAN_TITEL.db', check_same_thread=False)
-    c = conn.cursor()
-    c.execute('DELETE FROM titles WHERE rowid = ?', (title_id,))
-    conn.commit()
-    conn.close()
-
-def admin_dashboard():
-    st.subheader("管理者ダッシュボード")
-
-    with st.expander("ユーザー管理"):
-        new_user = st.text_input("新規ユーザー名", key="new_user")
-        new_password = st.text_input("新規パスワード", type='password', key="new_password")
-        if st.button("ユーザー追加"):
-            add_user(new_user, new_password)
-            st.success("ユーザーを追加しました。")
-
-        del_user = st.text_input("削除ユーザー名", key="del_user")
-        if st.button("ユーザー削除"):
-            delete_user(del_user)
-            st.success("ユーザーを削除しました。")
-
-    with st.expander("議案の追加と削除"):
-        date = st.text_input("日付")
-        meeting = st.text_input("会議名")
-        title = st.text_input("議案名")
-        if st.button("議案を追加"):
-            admin_add_title(date, meeting, title)
-            st.success("議案が追加されました。")
-
-        title_id = st.text_input("削除する議案のID")
-        if st.button("議案を削除"):
-            admin_delete_title(title_id)
-            st.success("議案が削除されました。")
+        conn.close()
 
 def main():
     st.sidebar.title("本人認証")
@@ -135,11 +86,7 @@ def main():
         password = st.sidebar.text_input("Password", type='password')
         if st.sidebar.button("Login"):
             if check_user(username, password):
-                st.session_state['logged_in'] = True
-                st.session_state['username'] = username
-                st.success("Login successful")
-                if username == 'admin':
-                    st.session_state['admin'] = True
+                st.session_state['logged_in'] = True  # ログイン状態をセッションに保存
             else:
                 st.warning("Incorrect Username/Password")
 
@@ -151,11 +98,9 @@ def main():
             st.success("You have successfully created an account.")
             st.info("Go to Login Menu to login")
 
+    # ログイン成功後のページ表示
     if 'logged_in' in st.session_state and st.session_state['logged_in']:
-        if 'admin' in st.session_state and st.session_state['admin']:
-            admin_dashboard()  # 管理者のみがアクセス可能なダッシュボード
-        else:
-            main_app()  # 通常のユーザー用ダッシュボード
+        main_app()
 
 if __name__ == "__main__":
     create_users_table()

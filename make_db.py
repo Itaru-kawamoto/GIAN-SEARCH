@@ -7,7 +7,7 @@ df = pd.read_csv('/Users/kawamoto/Desktop/Gian-Search/Gian_title.csv')
 df.colums = ['date', 'meeting', 'title']
 
 
-dbname = 'GIAN_TITEL.db'
+dbname = 'GIAN_TITLE.db'
 conn = sqlite3.connect(dbname)
 
 cur = conn.cursor()
