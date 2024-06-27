@@ -81,14 +81,14 @@ def main_app():
 
 # 管理者用のデータベース操作関数を追加
 def admin_add_title(date, meeting, title):
-    conn = sqlite3.connect('GIAN_TITEL.db', check_same_thread=False)
+    conn = sqlite3.connect('GIAN_TITLE.db', check_same_thread=False)
     c = conn.cursor()
     c.execute('INSERT INTO titles (date, meeting, title) VALUES (?, ?, ?)', (date, meeting, title))
     conn.commit()
     conn.close()
 
 def admin_delete_title(title_id):
-    conn = sqlite3.connect('GIAN_TITEL.db', check_same_thread=False)
+    conn = sqlite3.connect('GIAN_TITLE.db', check_same_thread=False)
     c = conn.cursor()
     c.execute('DELETE FROM titles WHERE rowid = ?', (title_id,))
     conn.commit()
